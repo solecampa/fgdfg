@@ -1,0 +1,249 @@
+{% extends "descartes/base.html" %}
+
+{% block title %}
+    Descartes
+{% endblock %}
+
+{% block body %}
+
+<!-- action="{% url 'descartes' %}" method="post" -->
+
+<script> 
+
+
+function myFunction() {
+        // Declare variables
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("tbody");
+        tr = table.getElementsByTagName("tr");
+        
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+          td = tr[i].getElementsByTagName("td")[0];
+          if (td) {
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+              tr[i].style.display = "";
+            } else {
+              tr[i].style.display = "none";
+            }
+          }
+        }
+
+
+
+    }
+
+
+</script>
+
+
+
+
+<div id="ingreso"  class="container p-5 ">
+    <h1 class="text-center"> Añadir descarte </h1>
+    <form id="formulario" >
+        <input  type="hidden"  id="token">
+    <div class="row ">
+        
+        <div class="col-6 ">
+
+            <div class="form-group">
+                <label for="exampleInputEmail1">Fecha</label>
+                <input type="date" class="form-control" id="fecha" aria-describedby="fecha" name="fecha" required>
+            </div>
+            <div class="form-group">
+                <label for="producto">Producto</label>
+                <select class="form-control" id="producto" name="producto" required>
+                  <option value="MIV">MIV</option>
+                  <option value="MNPE">MNPE</option>
+    
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="lote">Lote</label>
+                <input type="text" class="form-control" id="lote" name="lote" autocomplete="off" required>
+            </div>
+            <div class="form-group">
+                <label for="Motivo">Motivo</label>
+                <select class="form-control" id="motivo" name="motivo" required>
+                {% for m in motivo %}
+                <option value="{{m.id}}">{{ m }}</option>
+                {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="volumen">volumen</label>
+                <input type="number" class="form-control" id="volumen" name="volumen" required>
+            </div>
+
+        </div>
+        <div class="col-6 ">
+
+            <div class="form-group">
+                <label for="Tecnico">Tecnico</label>
+                <select class="form-control" id="tecnico" name="tecnico" required>
+                {% for t in Tecnico %}
+                <option value="{{t.id}}">{{ t.nombre }}-{{t.iniciales}}</option>
+                {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="Guia">Guia</label>
+                <select class="form-control" id="guia" name="guia" required>
+                {% for g in Guia %}
+                <option value="{{g.id}}">{{ g.guia }}</option>
+                {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="Filtro">Filtro</label> 
+                <select class="form-control" id="filtro" name="filtro" required>
+                {% for f in Filtro %}
+                <option value="{{f.id}}">{{ f.filtro }}</option>
+                {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="Linea">Linea</label>
+                <select class="form-control" id="linea" name="linea" required>
+                <option value="B">Blanca</option>
+                <option value="V">Verde</option>
+                <option value="A">Amarilla</option>
+                <option value="C">Celeste</option>
+                <option value="R">Rosa</option>
+                
+                </select>
+            </div>
+    
+            <div class="form-group">
+                <label for="observaciones">Observaciones</label>
+                <input type="text" class="form-control" id="observaciones" autocomplete="off" name="observaciones" >
+            </div>
+
+
+            {% if message %}
+    
+            <div id="alerta" class="alert alert-dismissable bg-primary">
+                    {{message}}
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                
+            </div>
+
+            {% endif %}
+
+
+        </div>
+        <button id="descartebtn" type="submit" class="btn btn-primary">Submit</button>
+
+        
+
+
+  </div>  
+    </form>
+</div>
+
+<div class="container " id="csv">
+    <h1 class="text-center">Descargar CSV</h1>
+
+    <form class=" form-group " action="{% url 'descaraga' %}" method="post">
+        {% csrf_token %}
+    Desde:  <input type="date" class="form-control" id="from" aria-describedby="desde" name="desde" required>
+    Hasta:    <input type="date" class="form-control" id="to" aria-describedby="hasta" name="hasta" required>
+        <input class="form-control"  value="Descargar csv" id="csvbtn" class="btn "  type="submit" name="Download csv">
+    </form>
+
+
+</div>
+
+<div class=" p-5  text-center">
+
+
+
+    <div>
+        <input  class="form-control " type="text" id="myInput" onkeyup="myFunction()" placeholder="Buscar por fecha.." autocomplete="off">
+   
+    </div>
+    
+    {% if mensaje %}
+    
+    <div id="mensaje" class="alert alert-dismissable ">
+            {{mensaje}}
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+        
+    </div>
+
+    {% endif %}
+   
+    <table id = "descartes">
+        <thead>
+        <tr class=" bg-primary sticky-top" >
+            
+            <th class="text-center">Fecha</th>
+            <th class="text-center">Producto</th>
+            <th class="text-center">Lote</th>
+            <th class="text-center">Motivo</th>
+            <th class="text-center">Tecnico</th>
+            <th class="text-center">Volumen</th>
+            <th class="text-center">Guia</th>
+            <th class="text-center">Filtro</th>
+            <th class="text-center">Linea</th>
+            <th class="text-center">Observaciones</th>
+            <th class="text-center">Usuario</th>
+            <th class="text-center">Borrado por</th>
+    
+        </tr>
+        </thead>
+        
+          
+        <tbody id="tbody" >
+            
+            {% for d in descartes|dictsortreversed:"fecha" %}
+            <tr>
+                <td>{{ d.fecha }}</td>
+                <td>{{ d.producto }}</td>
+                <td>{{ d.lote }}</td>
+                <td>{{ d.motivo }}</td>
+                <td>{{ d.tecnico.iniciales}}</td>
+                <td>{{ d.volumen }}</td>
+                <td>{{ d.guia }}</td>
+                <td>{{ d.filtro }}</td>
+                <td>{{ d.linea }}</td>
+                <td>{{ d.observaciones }}</td>
+                <td>{{ d.user.first_name}} {{d.user.last_name}}</td>
+                {% if d.borrado == False %}
+                <td><form id="formulario2" action="{% url 'remove' %}" method="post">  
+                    {% csrf_token %}       
+                <input  type="hidden" value="{{d.id}}"  name="remove" >
+                <button class="btn btn-danger">Remove</button>
+                </form>
+                </td>
+                {%endif%}
+                {% if d.borrado == True %}
+                <td class ="borrado">{{d.user.first_name}}{{d.user.last_name}}</td>
+                {%endif%}
+
+            </tr>
+                
+            {% endfor %}
+
+
+
+
+                
+
+            
+            
+        </tbody>
+    </table>
+    
+    </div>
+
+
+
+
+
+
+{% endblock %}

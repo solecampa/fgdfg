@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% load static %}
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        <!-- fontawesome -->
+        <script src="https://kit.fontawesome.com/6e90631620.js" crossorigin="anonymous"></script>
+        
+        <!-- bootstrap -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+        
+        <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script src="{% static 'script.js' %}"></script>
+        <title>{%block title%} {% endblock %} </title>
+
+    </head>
+    <body>
+        <div id="login" class="container contenedor">
+        <h3 class="text-center text-white">Password reset complete</h3>
+
+        <p class="text-center text-white">
+            Your password has been set. You may go ahead and log in now.
+        </p>
+
+        <a href="{% url 'login' %}">Log in</a>
+        </div>
+
+    </body> 
+    </html>
+    
