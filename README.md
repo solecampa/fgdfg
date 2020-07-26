@@ -1,3 +1,6 @@
+Click the link to a walk through https://www.youtube.com/watch?v=DvAPZ9ZwmQQ&t=187s
+
+
 I am a  biochemist and I am working in a pharmaceutical industry
 We elaborate two kind of products: MIV (Intravenous Mix) and MNPE(extemporaneous parenteral nutrition mix)
 
